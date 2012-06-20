@@ -1,7 +1,7 @@
 class mcollective::server($plugin_stomp_host, $plugin_stomp_user, $plugin_stomp_password) {
 
   package { ['mcollective', 'mcollective-common', 'rubygem-stomp']:
-    ensure => present,
+    ensure => latest,
   }
 
   package { 'sys-proctable':
@@ -11,7 +11,7 @@ class mcollective::server($plugin_stomp_host, $plugin_stomp_user, $plugin_stomp_
   }
 
   package { 'cegeka-mcollective-server-plugins':
-    ensure => present,
+    ensure => latest,
     notify => Service['mcollective'],
   }
 
