@@ -1,0 +1,27 @@
+topicprefix = /topic/
+main_collective = mcollective
+collectives = mcollective
+libdir = /usr/libexec/mcollective
+logger_type = console
+loglevel = warn
+
+# Plugins
+securityprovider = psk
+plugin.psk = unset
+
+# Connecting to 1..n hosts
+connector = stomp
+plugin.stomp.pool.size = 2
+plugin.stomp.pool.host1 = <%= plugin_stomp_host1 %>
+plugin.stomp.pool.port1 = 6163
+plugin.stomp.pool.user1 = <%= plugin_stomp_user1 %>
+plugin.stomp.pool.password1 = <%= plugin_stomp_password1 %>
+plugin.stomp.pool.host2 = <%= plugin_stomp_host2 %>
+plugin.stomp.pool.port2 = 6163
+plugin.stomp.pool.user2 = <%= plugin_stomp_user2 %>
+plugin.stomp.pool.password2 = <%= plugin_stomp_password2 %>
+
+# Facts
+factsource = yaml
+plugin.yaml = /etc/mcollective/facts.yaml
+
