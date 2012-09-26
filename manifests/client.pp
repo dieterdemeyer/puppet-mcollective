@@ -1,11 +1,19 @@
 class mcollective::client($plugin_stomp_host1, $plugin_stomp_user1, $plugin_stomp_password1, $plugin_stomp_host2, $plugin_stomp_user2, $plugin_stomp_password2) {
 
-  package { ['mcollective-client', 'mcollective-common', 'rubygem-stomp']:
-    ensure => present,
+  package { 'mcollective-client':
+    ensure => '2.2.0',
+  }
+
+  package { 'mcollective-common':
+    ensure => '2.2.0',
+  }
+
+  package { 'rubygem-stomp':
+    ensure => '1.2.2',
   }
 
   package { 'cegeka-mcollective-client-plugins':
-    ensure => present,
+    ensure => latest,
   }
 
   file { '/etc/mcollective/client.cfg' :
