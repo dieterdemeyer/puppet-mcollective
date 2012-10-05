@@ -1,15 +1,31 @@
 class mcollective::server($plugin_stomp_host, $plugin_stomp_user, $plugin_stomp_password) {
 
+  case $::operatingsystemrelease {
+    /^5./: {
+      $mcollective_version = '2.2.0-1.el5'
+      $mcollective_common_version = '2.2.0-1.el5'
+      $rubygem_stomp_version = '1.2.2-1.el5'
+    }
+
+    /^6./: {
+      $mcollective_version = '2.2.0-1.el6'
+      $mcollective_common_version = '2.2.0-1.el6'
+      $rubygem_stomp_version = '1.2.2-1.el6'
+    }
+
+    default: { notice("operatingsystemrelease ${::operatingsystemrelease} is not supported") }
+  }
+
   package { 'mcollective':
-    ensure => '2.2.0-1',
+    ensure => $mcollective_version,
   }
 
   package { 'mcollective-common':
-    ensure => '2.2.0-1',
+    ensure => $mcollective_common_version,
   }
 
   package { 'rubygem-stomp':
-    ensure => '1.2.2-1',
+    ensure => $rubygem_stomp_version,
   }
 
   package { 'sys-proctable':
