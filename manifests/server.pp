@@ -1,15 +1,15 @@
 class mcollective::server($plugin_stomp_host, $plugin_stomp_user, $plugin_stomp_password) {
 
   package { 'mcollective':
-    ensure => '2.2.0',
+    ensure => '2.2.0-1',
   }
 
   package { 'mcollective-common':
-    ensure => '2.2.0',
+    ensure => '2.2.0-1',
   }
 
   package { 'rubygem-stomp':
-    ensure => '1.2.2',
+    ensure => '1.2.2-1',
   }
 
   package { 'sys-proctable':
