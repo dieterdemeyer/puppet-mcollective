@@ -1,0 +1,2 @@
+class mcollective::middleware::service {
+}
