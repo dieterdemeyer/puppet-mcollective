@@ -5,7 +5,8 @@ class mcollective::agent::config($plugin_stomp_host, $plugin_stomp_user, $plugin
     owner   => root,
     group   => root,
     mode    => '0640',
-    content => template("${module_name}/server.cfg.erb")
+    content => template("${module_name}/server.cfg.erb"),
+    notify  => Class['mcollective::agent::service']
   }
 
 }
