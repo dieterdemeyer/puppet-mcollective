@@ -22,6 +22,10 @@ class mcollective::agent::package($mcollective_version, $rubygem_stomp_version) 
     ensure => $mcollective_version_real,
   }
 
+  package { 'mcollective-facter-facts':
+    ensure => latest,
+  }
+
   package { 'rubygem-stomp':
     ensure => $rubygem_stomp_version_real,
   }
