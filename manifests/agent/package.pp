@@ -8,7 +8,7 @@ class mcollective::agent::package($mcollective_version, $rubygem_stomp_version) 
 
     /^6./: {
       $mcollective_version_real = "${mcollective_version}.el6"
-      $rubygem_stomp_version_real = "${rubygem_stomp_version}..el6"
+      $rubygem_stomp_version_real = "${rubygem_stomp_version}.el6"
     }
 
     default: { notice("operatingsystemrelease ${::operatingsystemrelease} is not supported") }
