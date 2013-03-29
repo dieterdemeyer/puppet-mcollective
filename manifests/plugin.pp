@@ -15,7 +15,7 @@ define mcollective::plugin($ensure = 'present', $type = undef) {
   $agent_package = "mcollective-${name}-agent"
 
   package { $common_package :
-    ensure => $ensure,
+    ensure  => $ensure,
     require => Class["mcollective::${type}::package"]
   }
 
@@ -33,6 +33,7 @@ define mcollective::plugin($ensure = 'present', $type = undef) {
         notify  => Class["mcollective::${type}::service"]
       }
     }
+    default: { notice("Plugin type ${type} is not supported") }
   }
 
 }

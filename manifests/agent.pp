@@ -1,8 +1,4 @@
-class mcollective::agent($mcollective_version,
-                         $rubygem_stomp_version,
-                         $plugin_stomp_host,
-                         $plugin_stomp_user,
-                         $plugin_stomp_password) {
+class mcollective::agent($mcollective_version=undef, $rubygem_stomp_version=undef, $plugin_stomp_host=undef, $plugin_stomp_user=undef, $plugin_stomp_password=undef) {
 
   include mcollective::agent::service
 

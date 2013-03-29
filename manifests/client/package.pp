@@ -1,4 +1,4 @@
-class mcollective::client::package($mcollective_version, $rubygem_stomp_version) {
+class mcollective::client::package($mcollective_version=undef, $rubygem_stomp_version=undef) {
 
   case $::operatingsystemrelease {
     /^5./: {

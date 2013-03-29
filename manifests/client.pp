@@ -1,6 +1,6 @@
-class mcollective::client($mcollective_version,
-                          $rubygem_stomp_version,
-                          $plugin_stomp_broker_config) {
+class mcollective::client($mcollective_version=undef,
+                          $rubygem_stomp_version=undef,
+                          $plugin_stomp_broker_config=[]) {
 
   class { 'mcollective::client::package':
     mcollective_version   => $mcollective_version,
