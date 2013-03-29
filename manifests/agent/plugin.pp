@@ -1,2 +1,0 @@
-class mcollective::agent::plugin {
-}
