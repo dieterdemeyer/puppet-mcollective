@@ -39,7 +39,7 @@ class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_ver
   }
 
   package { 'mcollective-facter-facts':
-    ensure => $mcollective_version_real,
+    ensure => present,
   }
 
   package { 'rubygem-stomp':
