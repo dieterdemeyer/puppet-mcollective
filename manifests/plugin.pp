@@ -22,15 +22,15 @@ define mcollective::plugin($ensure = 'present', $type = undef) {
   case $type {
     'client': {
       package { $client_package :
-        ensure => $ensure,
+        ensure  => $ensure,
         require => Class["mcollective::${type}::package"]
       }
     }
     'agent': {
       package { $agent_package :
-        ensure => $ensure,
+        ensure  => $ensure,
         require => Class["mcollective::${type}::package"],
-        notify => Class["mcollective::${type}::service"]
+        notify  => Class["mcollective::${type}::service"]
       }
     }
   }
