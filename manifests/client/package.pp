@@ -1,5 +1,7 @@
 class mcollective::client::package($mcollective_version=undef, $rubygem_stomp_version=undef) {
 
+  include mcollective::common::package
+
   case $::operatingsystemrelease {
     /^5./: {
       $mcollective_version_real = "${mcollective_version}.el5"
@@ -20,10 +22,6 @@ class mcollective::client::package($mcollective_version=undef, $rubygem_stomp_ve
 
   package { 'mcollective-facter-facts':
     ensure => latest,
-  }
-
-  package { 'rubygem-stomp':
-    ensure => $rubygem_stomp_version_real,
   }
 
 }

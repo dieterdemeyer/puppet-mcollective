@@ -1,5 +1,7 @@
 class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_version=undef) {
 
+  include mcollective::common::package
+
   case $::operatingsystemrelease {
     /^5./: {
       if ! $mcollective_version {
@@ -40,10 +42,6 @@ class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_ver
 
   package { 'mcollective-facter-facts':
     ensure => present,
-  }
-
-  package { 'rubygem-stomp':
-    ensure => $rubygem_stomp_version_real,
   }
 
   package { 'sys-proctable':
