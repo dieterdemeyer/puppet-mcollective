@@ -14,7 +14,7 @@ connector = stomp
 plugin.stomp.pool.size = <%= plugin_stomp_broker_config.count %>
 <%- scope.lookupvar('plugin_stomp_broker_config').each do |broker_config| -%>
 plugin.stomp.pool.host<%= scope.lookupvar('plugin_stomp_broker_config').index(broker_config) + 1 %> = <%= broker_config['host'] %>
-plugin.stomp.pool.port<%= scope.lookupvar('plugin_stomp_broker_config').index(broker_config) + 1 %> = 6163
+plugin.stomp.pool.port<%= scope.lookupvar('plugin_stomp_broker_config').index(broker_config) + 1 %> = 61613
 plugin.stomp.pool.user<%= scope.lookupvar('plugin_stomp_broker_config').index(broker_config) + 1 %> = <%= broker_config['user'] %>
 plugin.stomp.pool.password<%= scope.lookupvar('plugin_stomp_broker_config').index(broker_config) + 1 %> = <%= broker_config['password'] %>
 <%- end -%>
