@@ -1,4 +1,4 @@
-class mcollective::client::config($plugin_stomp_broker_config=[]) {
+class mcollective::client::config($broker_pool_config=[]) {
 
   file { '/etc/mcollective/client.cfg' :
     ensure  => file,

@@ -1,7 +1,11 @@
 class mcollective::common::package {
 
   package { 'rubygem-stomp':
-    ensure => installed
+    ensure => present
+  }
+
+  package { 'mcollective-facter-facts':
+    ensure => present
   }
 
 }

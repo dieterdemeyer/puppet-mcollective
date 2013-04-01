@@ -11,10 +11,10 @@ securityprovider = psk
 plugin.psk = unset
 
 connector = stomp
-plugin.stomp.host = <%= plugin_stomp_host %>
-plugin.stomp.port = 61613
-plugin.stomp.user = <%= plugin_stomp_user %>
-plugin.stomp.password = <%= plugin_stomp_password %>
+plugin.stomp.host = <%= broker_host %>
+plugin.stomp.port = <%= broker_port %>
+plugin.stomp.user = <%= broker_user %>
+plugin.stomp.password = <%= broker_password %>
 
 # Facts
 #factsource = yaml

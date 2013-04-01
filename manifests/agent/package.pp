@@ -1,4 +1,4 @@
-class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_version=undef) {
+class mcollective::agent::package($mcollective_version=undef) {
 
   include mcollective::common::package
 
@@ -9,11 +9,6 @@ class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_ver
       } else {
         $mcollective_version_real = "${mcollective_version}.el5"
       }
-      if ! $rubygem_stomp_version {
-        $rubygem_stomp_version_real = 'latest'
-      } else {
-        $rubygem_stomp_version_real = "${rubygem_stomp_version}.el5"
-      }
     }
 
     /^6./: {
@@ -21,11 +16,6 @@ class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_ver
         $mcollective_version_real = 'latest'
       } else {
         $mcollective_version_real = "${mcollective_version}.el6"
-      }
-      if ! $rubygem_stomp_version {
-        $rubygem_stomp_version_real = 'latest'
-      } else {
-        $rubygem_stomp_version_real = "${rubygem_stomp_version}.el6"
       }
     }
 
@@ -38,10 +28,6 @@ class mcollective::agent::package($mcollective_version=undef, $rubygem_stomp_ver
 
   package { 'mcollective-common':
     ensure => $mcollective_version_real,
-  }
-
-  package { 'mcollective-facter-facts':
-    ensure => present,
   }
 
   package { 'sys-proctable':

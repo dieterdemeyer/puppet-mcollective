@@ -1,16 +1,16 @@
-class mcollective::agent($mcollective_version=undef, $rubygem_stomp_version=undef, $plugin_stomp_host=undef, $plugin_stomp_user=undef, $plugin_stomp_password=undef) {
+class mcollective::agent($mcollective_version=undef, $broker_host=undef, $broker_port='61613', $broker_user=undef, $broker_password=undef) {
 
   include mcollective::agent::service
 
   class { 'mcollective::agent::package':
-    mcollective_version   => $mcollective_version,
-    rubygem_stomp_version => $rubygem_stomp_version
+    mcollective_version   => $mcollective_version
   }
 
   class { 'mcollective::agent::config':
-    plugin_stomp_host     => $plugin_stomp_host,
-    plugin_stomp_user     => $plugin_stomp_user,
-    plugin_stomp_password => $plugin_stomp_password
+    broker_host     => $broker_host,
+    broker_port     => $broker_port,
+    broker_user     => $broker_user,
+    broker_password => $broker_password
   }
 
   Class['mcollective::agent::package'] -> Class['mcollective::agent::config'] ~> Class['mcollective::agent::service']
