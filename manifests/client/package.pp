@@ -26,4 +26,8 @@ class mcollective::client::package($mcollective_version=undef) {
     ensure => $mcollective_version_real,
   }
 
+  package { 'mcollective-facter-facts':
+    ensure => present
+  }
+
 }

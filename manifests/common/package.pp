@@ -4,8 +4,4 @@ class mcollective::common::package {
     ensure => present
   }
 
-  package { 'mcollective-facter-facts':
-    ensure => present
-  }
-
 }

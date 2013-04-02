@@ -30,6 +30,10 @@ class mcollective::agent::package($mcollective_version=undef) {
     ensure => $mcollective_version_real,
   }
 
+  package { 'mcollective-facter-facts':
+    ensure => present
+  }
+
   package { 'sys-proctable':
     ensure   => installed,
     provider => gem
