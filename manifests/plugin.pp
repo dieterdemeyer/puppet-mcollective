@@ -1,8 +1,8 @@
 define mcollective::plugin($ensure = 'present', $type = undef) {
 
   case $ensure {
-    'present', 'absent': { $ensure_real = $ensure }
-    default: { fail('Class[mcollective::plugin]: parameter ensure must be present or absent') }
+    'latest', 'present', 'absent': { $ensure_real = $ensure }
+    default: { fail('Class[mcollective::plugin]: parameter ensure must be latest, present or absent') }
   }
 
 
