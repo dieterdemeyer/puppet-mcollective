@@ -1,7 +1,13 @@
 class mcollective::middleware::package {
 
-  package { ['tanukiwrapper', 'activemq', 'activemq-info-provider', 'rubygems', 'rubygem-stomp']:
-    ensure => installed
+  include mcollective::common::package
+
+  package { ['activemq', 'activemq-info-provider']:
+    ensure => present
+  }
+
+  package { ['tanukiwrapper', 'rubygems']:
+    ensure => present
   }
 
 }
