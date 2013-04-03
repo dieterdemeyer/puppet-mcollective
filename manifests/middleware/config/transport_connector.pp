@@ -33,8 +33,8 @@ define mcollective::middleware::config::transport_connector($uri, $ensure='prese
   }
 
   @augeas { "transportConnectors/transportConnector/${title}/rm" :
-    lens => 'Xml.lns',
-    incl => '/etc/activemq/activemq.xml',
+    lens    => 'Xml.lns',
+    incl    => '/etc/activemq/activemq.xml',
     context => '/files/etc/activemq/activemq.xml',
     changes => [
       "rm beans/broker/transportConnectors/transportConnector[.][#attribute/name = \"${title}\"]",

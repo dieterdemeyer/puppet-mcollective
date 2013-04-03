@@ -42,8 +42,8 @@ define mcollective::middleware::config::authorization_entry($destination, $desti
   }
 
   @augeas { "plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry/${title}/rm" :
-    lens => 'Xml.lns',
-    incl => '/etc/activemq/activemq.xml',
+    lens    => 'Xml.lns',
+    incl    => '/etc/activemq/activemq.xml',
     context => '/files/etc/activemq/activemq.xml',
     changes => [
       "rm beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[.][#attribute/${destination_real} = \"${destination_content}\"]",

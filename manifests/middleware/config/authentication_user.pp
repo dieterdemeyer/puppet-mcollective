@@ -34,8 +34,8 @@ define mcollective::middleware::config::authentication_user($username, $password
   }
 
   @augeas { "plugins/simpleAuthenticationPlugin/users/authenticationUser/${username}/rm" :
-    lens => 'Xml.lns',
-    incl => '/etc/activemq/activemq.xml',
+    lens    => 'Xml.lns',
+    incl    => '/etc/activemq/activemq.xml',
     context => '/files/etc/activemq/activemq.xml',
     changes => [
       "rm beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[.][#attribute/username = \"${username}\"]",

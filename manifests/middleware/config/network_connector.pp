@@ -2,11 +2,11 @@ define mcollective::middleware::config::network_connector(
   $uri,
   $username,
   $password,
-  $duplex='true',
-  $decrease_network_consumer_priority='true',
+  $duplex=true,
+  $decrease_network_consumer_priority=true,
   $network_ttl='2',
-  $dynamic_only='true',
-  $conduit_subscriptions='true',
+  $dynamic_only=true,
+  $conduit_subscriptions=true,
   $ensure='present'
 ) {
 
@@ -40,7 +40,7 @@ define mcollective::middleware::config::network_connector(
             "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/networkTTL ${network_ttl}",
             "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/dynamicOnly ${dynamic_only}",
             "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/conduitSubscriptions ${conduit_subscriptions}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/excludedDestinations/queue/#attribute/physicalName '>'",
+            'set beans/broker/networkConnectors/networkConnector[last()]/excludedDestinations/queue/#attribute/physicalName >',
           ],
           onlyif  => "match beans/broker/networkConnectors/networkConnector[#attribute/name[. =\"${title}\"] and #attribute/uri[. = \"${uri}\"] and #attribute/userName[. = \"${username}\"] and #attribute/password[. = \"${password}\"] and #attribute/conduitSubscriptions[. = \"${conduit_subscriptions}\"]] size == 0",
           require => Augeas["networkConnectors/networkConnector/${title}/rm"],
