@@ -10,37 +10,37 @@ define mcollective::middleware::config::authentication_user($username, $password
   case $ensure_real {
     'absent':
       {
-        Augeas <| title == "plugins/simpleAuthenticationPlugin/users/authenticationUser/${username}/rm" |>
+        Augeas <| title == "authenticationUser/${username}/rm" |>
       }
     'present':
       {
-        Augeas <| title == "plugins/simpleAuthenticationPlugin/users/authenticationUser/${username}/rm" |>
+        Augeas <| title == "authenticationUser/${username}/rm" |>
 
-        augeas { "plugins/simpleAuthenticationPlugin/users/authenticationUser/${username}/add" :
+        augeas { "authenticationUser/${username}/add" :
           lens    => 'Xml.lns',
           incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml',
+          context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/simpleAuthenticationPlugin',
           changes => [
-            "set beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[last()+1]/#attribute/username ${username}",
-            "set beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[last()]/#attribute/password ${password}",
-            "set beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[last()]/#attribute/groups ${groups}",
+            "set users/authenticationUser[last()+1]/#attribute/username ${username}",
+            "set users/authenticationUser[last()]/#attribute/password ${password}",
+            "set users/authenticationUser[last()]/#attribute/groups ${groups}",
           ],
-          onlyif  => "match beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[#attribute/username[. = \"${username}\"] and #attribute/password[. = \"${password}\"] and #attribute/groups[. = \"${groups}\"]] size == 0",
-          require => [ Augeas["plugins/simpleAuthenticationPlugin/users/authenticationUser/${username}/rm"], Class['mcollective::middleware::config'] ],
+          onlyif  => "match users/authenticationUser[.][#attribute/username = \"${username}\" and #attribute/password = \"${password}\" and #attribute/groups = \"${groups}\"] size == 0",
+          require => [ Augeas["authenticationUser/${username}/rm"], Class['mcollective::middleware::config'] ],
           notify  => Class['mcollective::middleware::service']
         }
       }
     default: { notice('The given ensure parameter is not supported') }
   }
 
-  @augeas { "plugins/simpleAuthenticationPlugin/users/authenticationUser/${username}/rm" :
+  @augeas { "authenticationUser/${username}/rm" :
     lens    => 'Xml.lns',
     incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/simpleAuthenticationPlugin',
     changes => [
-      "rm beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[.][#attribute/username = \"${username}\"]",
+      "rm users/authenticationUser[.][#attribute/username = \"${username}\"]",
     ],
-    onlyif  => "match beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[#attribute/username[. = \"${username}\"] and #attribute/password[. = \"${password}\"] and #attribute/groups[. = \"${groups}\"]] size == 0",
+    onlyif  => "match users/authenticationUser[.][#attribute/username = \"${username}\" and #attribute/password = \"${password}\" and #attribute/groups = \"${groups}\"] size == 0",
     require => Class['mcollective::middleware::config'],
     notify  => Class['mcollective::middleware::service']
   }

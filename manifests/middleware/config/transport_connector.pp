@@ -19,12 +19,12 @@ define mcollective::middleware::config::transport_connector($uri, $ensure='prese
         augeas { "transportConnectors/transportConnector/${title}/add" :
           lens    => 'Xml.lns',
           incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml',
+          context => '/files/etc/activemq/activemq.xml/beans/broker',
           changes => [
-            "set beans/broker/transportConnectors/transportConnector[last()+1]/#attribute/name ${title}",
-            "set beans/broker/transportConnectors/transportConnector[last()]/#attribute/uri ${uri}",
+            "set transportConnectors/transportConnector[last()+1]/#attribute/name ${title}",
+            "set transportConnectors/transportConnector[last()]/#attribute/uri ${uri}",
           ],
-          onlyif  => "match beans/broker/transportConnectors/transportConnector[#attribute/name[. =\"${title}\"] and #attribute/uri[. = \"${uri}\"]] size == 0",
+          onlyif  => "match transportConnectors/transportConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\"] size == 0",
           require => [ Augeas["transportConnectors/transportConnector/${title}/rm"], Class['mcollective::middleware::config'] ],
           notify  => Class['mcollective::middleware::service']
         }
@@ -35,11 +35,11 @@ define mcollective::middleware::config::transport_connector($uri, $ensure='prese
   @augeas { "transportConnectors/transportConnector/${title}/rm" :
     lens    => 'Xml.lns',
     incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker',
     changes => [
-      "rm beans/broker/transportConnectors/transportConnector[.][#attribute/name = \"${title}\"]",
+      "rm transportConnectors/transportConnector[.][#attribute/name = \"${title}\"]",
     ],
-    onlyif  => "match beans/broker/transportConnectors/transportConnector[#attribute/name[. =\"${title}\"] and #attribute/uri[. = \"${uri}\"]] size == 0",
+    onlyif  => "match transportConnectors/transportConnector[.][#attribute/name = \"${title}\" ]/#attribute/uri[. = \"${uri}\" ] size == 0",
     require => Class['mcollective::middleware::config'],
     notify  => Class['mcollective::middleware::service']
   }

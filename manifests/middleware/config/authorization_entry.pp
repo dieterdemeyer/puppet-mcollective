@@ -17,38 +17,38 @@ define mcollective::middleware::config::authorization_entry($destination, $desti
   case $ensure_real {
     'absent':
       {
-        Augeas <| title == "plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry/${title}/rm" |>
+        Augeas <| title == "authorizationEntry/${title}/rm" |>
       }
     'present':
       {
-        Augeas <| title == "plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry/${title}/rm" |>
+        Augeas <| title == "authorizationEntry/${title}/rm" |>
 
-        augeas { "plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry/${title}/add" :
+        augeas { "authorizationEntry/${title}/add" :
           lens    => 'Xml.lns',
           incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml',
+          context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/authorizationPlugin/map/authorizationMap',
           changes => [
-            "set beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[last()+1]/#attribute/${destination_real} ${destination_content}",
-            "set beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[last()]/#attribute/write ${write}",
-            "set beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[last()]/#attribute/read ${read}",
-            "set beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[last()]/#attribute/admin ${admin}",
+            "set authorizationEntries/authorizationEntry[last()+1]/#attribute/${destination_real} ${destination_content}",
+            "set authorizationEntries/authorizationEntry[last()]/#attribute/write ${write}",
+            "set authorizationEntries/authorizationEntry[last()]/#attribute/read ${read}",
+            "set authorizationEntries/authorizationEntry[last()]/#attribute/admin ${admin}",
           ],
-          onlyif  => "match beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[#attribute/${destination_real}[. =\"${destination_content}\"] and #attribute/write[. = \"${write}\"] and #attribute/read[. = \"${read}\"] and #attribute/admin[. = \"${admin}\"]] size == 0",
-          require => [ Augeas["plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry/${title}/rm"], Class['mcollective::middleware::config'] ],
+          onlyif  => "match authorizationEntries/authorizationEntry[.][#attribute/${destination_real} =\"${destination_content}\" and #attribute/write = \"${write}\" and #attribute/read = \"${read}\" and #attribute/admin = \"${admin}\"] size == 0",
+          require => [ Augeas["authorizationEntry/${title}/rm"], Class['mcollective::middleware::config'] ],
           notify  => Class['mcollective::middleware::service']
         }
       }
     default: { notice('The given ensure parameter is not supported') }
   }
 
-  @augeas { "plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry/${title}/rm" :
+  @augeas { "authorizationEntry/${title}/rm" :
     lens    => 'Xml.lns',
     incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/authorizationPlugin/map/authorizationMap',
     changes => [
-      "rm beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[.][#attribute/${destination_real} = \"${destination_content}\"]",
+      "rm authorizationEntries/authorizationEntry[.][#attribute/${destination_real} = \"${destination_content}\"]",
     ],
-    onlyif  => "match beans/broker/plugins/authorizationPlugin/map/authorizationMap/authorizationEntries/authorizationEntry[#attribute/${destination_real}[. =\"${destination_content}\"] and #attribute/write[. = \"${write}\"] and #attribute/read[. = \"${read}\"] and #attribute/admin[. = \"${admin}\"]] size == 0",
+    onlyif  => "match authorizationEntries/authorizationEntry[.][#attribute/${destination_real} =\"${destination_content}\" and #attribute/write = \"${write}\" and #attribute/read = \"${read}\" and #attribute/admin = \"${admin}\"] size == 0",
     require => Class['mcollective::middleware::config'],
     notify  => Class['mcollective::middleware::service']
   }

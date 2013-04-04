@@ -29,20 +29,20 @@ define mcollective::middleware::config::network_connector(
         augeas { "networkConnectors/networkConnector/${title}/add" :
           lens    => 'Xml.lns',
           incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml',
+          context => '/files/etc/activemq/activemq.xml/beans/broker',
           changes => [
-            "set beans/broker/networkConnectors/networkConnector[last()+1]/#attribute/name ${title}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/uri ${uri}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/userName ${username}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/password ${password}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/duplex ${duplex}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/decreaseNetworkConsumerPriority ${decrease_network_consumer_priority}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/networkTTL ${network_ttl}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/dynamicOnly ${dynamic_only}",
-            "set beans/broker/networkConnectors/networkConnector[last()]/#attribute/conduitSubscriptions ${conduit_subscriptions}",
-            'set beans/broker/networkConnectors/networkConnector[last()]/excludedDestinations/queue/#attribute/physicalName >',
+            "set networkConnectors/networkConnector[last()+1]/#attribute/name ${title}",
+            "set networkConnectors/networkConnector[last()]/#attribute/uri ${uri}",
+            "set networkConnectors/networkConnector[last()]/#attribute/userName ${username}",
+            "set networkConnectors/networkConnector[last()]/#attribute/password ${password}",
+            "set networkConnectors/networkConnector[last()]/#attribute/duplex ${duplex}",
+            "set networkConnectors/networkConnector[last()]/#attribute/decreaseNetworkConsumerPriority ${decrease_network_consumer_priority}",
+            "set networkConnectors/networkConnector[last()]/#attribute/networkTTL ${network_ttl}",
+            "set networkConnectors/networkConnector[last()]/#attribute/dynamicOnly ${dynamic_only}",
+            "set networkConnectors/networkConnector[last()]/#attribute/conduitSubscriptions ${conduit_subscriptions}",
+            'set networkConnectors/networkConnector[last()]/excludedDestinations/queue/#attribute/physicalName >',
           ],
-          onlyif  => "match beans/broker/networkConnectors/networkConnector[#attribute/name[. =\"${title}\"] and #attribute/uri[. = \"${uri}\"] and #attribute/userName[. = \"${username}\"] and #attribute/password[. = \"${password}\"] and #attribute/conduitSubscriptions[. = \"${conduit_subscriptions}\"]] size == 0",
+          onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\" and #attribute/conduitSubscriptions = \"${conduit_subscriptions}\"] size == 0",
           require => Augeas["networkConnectors/networkConnector/${title}/rm"],
           notify  => Class['mcollective::middleware::service']
         }
@@ -53,11 +53,11 @@ define mcollective::middleware::config::network_connector(
   @augeas { "networkConnectors/networkConnector/${title}/rm" :
     lens    => 'Xml.lns',
     incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker',
     changes => [
-      "rm beans/broker/networkConnectors/networkConnector[.][#attribute/name = \"${title}\"]",
+      "rm networkConnectors/networkConnector[.][#attribute/name = \"${title}\"]",
     ],
-    onlyif  => "match beans/broker/networkConnectors/networkConnector[#attribute/name[. =\"${title}\"] and #attribute/uri[. = \"${uri}\"] and #attribute/userName[. = \"${username}\"] and #attribute/password[. = \"${password}\"] and #attribute/conduitSubscriptions[. = \"${conduit_subscriptions}\"]] size == 0",
+    onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\" and #attribute/conduitSubscriptions = \"${conduit_subscriptions}\"] size == 0",
     require => Class['mcollective::middleware::config'],
     notify  => Class['mcollective::middleware::service']
   }
