@@ -1,4 +1,20 @@
-class mcollective::agent($mcollective_version=undef, $broker_host=undef, $broker_port='61613', $broker_user=undef, $broker_password=undef) {
+class mcollective::agent($mcollective_version=undef, $broker_host=undef, $broker_port=undef, $broker_user=undef, $broker_password=undef) {
+
+  if ! $broker_host {
+    fail('Class[Mcollective::Agent]: parameter broker_host must be provided')
+  }
+
+  if ! $broker_port {
+    fail('Class[Mcollective::Agent]: parameter broker_port must be provided')
+  }
+
+  if ! $broker_user {
+    fail('Class[Mcollective::Agent]: parameter broker_user must be provided')
+  }
+
+  if ! $broker_password {
+    fail('Class[Mcollective::Agent]: parameter broker_password must be provided')
+  }
 
   include mcollective::agent::service
 

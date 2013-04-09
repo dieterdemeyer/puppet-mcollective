@@ -1,7 +1,7 @@
 class mcollective::client($mcollective_version=undef, $broker_pool_config=[]) {
 
   class { 'mcollective::client::package':
-    mcollective_version   => $mcollective_version
+    mcollective_version => $mcollective_version
   }
 
   class { 'mcollective::client::config':
