@@ -1,4 +1,4 @@
-class mcollective::agent::config($broker_host=undef, $broker_port='61613', $broker_user=undef, $broker_password=undef) {
+class mcollective::agent::config($broker_host=undef, $broker_port=undef, $broker_user=undef, $broker_password=undef) {
 
   file { '/etc/mcollective/server.cfg' :
     ensure  => file,
