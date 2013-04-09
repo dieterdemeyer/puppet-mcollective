@@ -10,9 +10,9 @@ define mcollective::plugin($ensure = 'present', $type = undef) {
     fail('Class[mcollective::plugin]: parameter type must be client or agent')
   }
 
-  $common_package = "mcollective-${name}-common"
-  $client_package = "mcollective-${name}-client"
-  $agent_package = "mcollective-${name}-agent"
+  $common_package = "mcollective-${title}-common"
+  $client_package = "mcollective-${title}-client"
+  $agent_package = "mcollective-${title}-agent"
 
   package { $common_package :
     ensure  => $ensure,
