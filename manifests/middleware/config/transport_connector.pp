@@ -1,4 +1,10 @@
-define mcollective::middleware::config::transport_connector($uri, $ensure='present') {
+define mcollective::middleware::config::transport_connector($uri=undef, $ensure='present') {
+
+  Augeas {
+    lens    => 'Xml.lns',
+    incl    => '/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker',
+  }
 
   if $ensure in [ 'present', 'absent' ] {
     $ensure_real = $ensure
@@ -14,12 +20,13 @@ define mcollective::middleware::config::transport_connector($uri, $ensure='prese
       }
     'present':
       {
+        if ! $uri {
+          fail('Class[Mcollective::Middleware::Config::Transport_connector]: parameter uri must be provided')
+        }
+
         Augeas <| title == "transportConnectors/transportConnector/${title}/rm" |>
 
         augeas { "transportConnectors/transportConnector/${title}/add" :
-          lens    => 'Xml.lns',
-          incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml/beans/broker',
           changes => [
             "set transportConnectors/transportConnector[last()+1]/#attribute/name ${title}",
             "set transportConnectors/transportConnector[last()]/#attribute/uri ${uri}",
@@ -33,9 +40,6 @@ define mcollective::middleware::config::transport_connector($uri, $ensure='prese
   }
 
   @augeas { "transportConnectors/transportConnector/${title}/rm" :
-    lens    => 'Xml.lns',
-    incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml/beans/broker',
     changes => [
       "rm transportConnectors/transportConnector[.][#attribute/name = \"${title}\"]",
     ],

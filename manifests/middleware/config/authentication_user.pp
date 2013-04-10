@@ -1,4 +1,10 @@
-define mcollective::middleware::config::authentication_user($username, $password, $groups, $ensure='present') {
+define mcollective::middleware::config::authentication_user($username=undef, $password=undef, $groups=undef, $ensure='present') {
+
+  Augeas {
+    lens    => 'Xml.lns',
+    incl    => '/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/simpleAuthenticationPlugin',
+  }
 
   if $ensure in [ 'present', 'absent' ] {
     $ensure_real = $ensure
@@ -14,12 +20,13 @@ define mcollective::middleware::config::authentication_user($username, $password
       }
     'present':
       {
+        if ($username == undef or $password == undef or $groups == undef) {
+                    fail("Class[MCollective::Middleware::Config::Authentication_user[${title}]: parameters username, password and groups must be defined")
+                            }
+
         Augeas <| title == "authenticationUser/${username}/rm" |>
 
         augeas { "authenticationUser/${username}/add" :
-          lens    => 'Xml.lns',
-          incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/simpleAuthenticationPlugin',
           changes => [
             "set users/authenticationUser[last()+1]/#attribute/username ${username}",
             "set users/authenticationUser[last()]/#attribute/password ${password}",
@@ -34,9 +41,6 @@ define mcollective::middleware::config::authentication_user($username, $password
   }
 
   @augeas { "authenticationUser/${username}/rm" :
-    lens    => 'Xml.lns',
-    incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml/beans/broker/plugins/simpleAuthenticationPlugin',
     changes => [
       "rm users/authenticationUser[.][#attribute/username = \"${username}\"]",
     ],

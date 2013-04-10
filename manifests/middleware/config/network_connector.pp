@@ -1,7 +1,7 @@
 define mcollective::middleware::config::network_connector(
-  $uri,
-  $username,
-  $password,
+  $uri=undef,
+  $username=undef,
+  $password=undef,
   $duplex=true,
   $decrease_network_consumer_priority=true,
   $network_ttl='2',
@@ -9,6 +9,12 @@ define mcollective::middleware::config::network_connector(
   $conduit_subscriptions=true,
   $ensure='present'
 ) {
+
+  Augeas {
+    lens    => 'Xml.lns',
+    incl    => '/etc/activemq/activemq.xml',
+    context => '/files/etc/activemq/activemq.xml/beans/broker',
+  }
 
   if $ensure in [ 'present', 'absent' ] {
     $ensure_real = $ensure
@@ -24,12 +30,13 @@ define mcollective::middleware::config::network_connector(
       }
     'present':
       {
+        if ($uri == undef or $username == undef or $password == undef) {
+          fail("Class[MCollective::Middleware::Config::Network_connector[${title}]: parameters uri, username and password must be defined")
+        }
+
         Augeas <| title == "networkConnectors/networkConnector/${title}/rm" |>
 
         augeas { "networkConnectors/networkConnector/${title}/add" :
-          lens    => 'Xml.lns',
-          incl    => '/etc/activemq/activemq.xml',
-          context => '/files/etc/activemq/activemq.xml/beans/broker',
           changes => [
             "set networkConnectors/networkConnector[last()+1]/#attribute/name ${title}",
             "set networkConnectors/networkConnector[last()]/#attribute/uri ${uri}",
@@ -51,9 +58,6 @@ define mcollective::middleware::config::network_connector(
   }
 
   @augeas { "networkConnectors/networkConnector/${title}/rm" :
-    lens    => 'Xml.lns',
-    incl    => '/etc/activemq/activemq.xml',
-    context => '/files/etc/activemq/activemq.xml/beans/broker',
     changes => [
       "rm networkConnectors/networkConnector[.][#attribute/name = \"${title}\"]",
     ],
