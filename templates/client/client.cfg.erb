@@ -1,0 +1,24 @@
+topicprefix = /topic/
+main_collective = mcollective
+collectives = mcollective
+libdir = /usr/libexec/mcollective
+logger_type = console
+loglevel = warn
+
+# Plugins
+securityprovider = psk
+plugin.psk = unset
+
+# Connecting to 1..n hosts
+connector = stomp
+plugin.stomp.pool.size = <%= broker_pool_config.count %>
+<%- scope.lookupvar('broker_pool_config').each do |broker_config| -%>
+plugin.stomp.pool.host<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['host'] %>
+plugin.stomp.pool.port<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['port'] %>
+plugin.stomp.pool.user<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['user'] %>
+plugin.stomp.pool.password<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['password'] %>
+<%- end -%>
+
+# Facts
+factsource = yaml
+plugin.yaml = /etc/mcollective/facts.yaml
