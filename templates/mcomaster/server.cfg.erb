@@ -1,0 +1,34 @@
+topicprefix = /topic/
+main_collective = mcollective
+collectives = mcollective
+libdir = /usr/libexec/mcollective
+logfile = /var/log/mcollective.log
+loglevel = debug
+daemonize = 1
+
+# Plugins
+securityprovider = psk
+plugin.psk = unset
+
+connector = stomp
+<%- scope.lookupvar('broker_pool_config').each do |broker_config| -%>
+plugin.stomp.host<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['host'] %>
+plugin.stomp.port<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['port'] %>
+plugin.stomp.user<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['user'] %>
+plugin.stomp.password<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['password'] %>
+<%- end -%>
+
+# Facts
+#factsource = yaml
+#plugin.yaml = /etc/mcollective/facts.yaml
+factsource = facter
+plugin.facter.facterlib = /var/lib/puppet/lib/facter:/var/lib/puppet/facts
+
+plugin.redis.host = localhost
+plugin.redis.port = 6379
+plugin.redis.db = 0
+
+registerinterval = 60
+registration = Meta
+
+direct_addressing = 1
