@@ -3,7 +3,7 @@ main_collective = mcollective
 collectives = mcollective
 libdir = /usr/libexec/mcollective
 logfile = /var/log/mcollective.log
-loglevel = info
+loglevel = <%= log_level %>
 daemonize = 1
 
 # Plugins
@@ -21,3 +21,8 @@ plugin.stomp.password = <%= broker_password %>
 #plugin.yaml = /etc/mcollective/facts.yaml
 factsource = facter
 plugin.facter.facterlib = /var/lib/puppet/lib/facter:/var/lib/puppet/facts
+
+registerinterval = 60
+registration = Meta
+
+direct_addressing = 1

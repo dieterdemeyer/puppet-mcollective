@@ -22,12 +22,20 @@ class mcollective::client::package($mcollective_version=undef) {
     default: { notice("operatingsystemrelease ${::operatingsystemrelease} is not supported") }
   }
 
-  package { ['mcollective-common', 'mcollective-client']:
-    ensure => $mcollective_version_real,
+  if ! defined(Package['mcollective-common']) {
+    package { 'mcollective-common':
+      ensure => $mcollective_version_real
+    }
   }
 
-  package { 'mcollective-facter-facts':
-    ensure => present
+  package { 'mcollective-client':
+    ensure => $mcollective_version_real
+  }
+
+  if ! defined(Package['mcollective-facter-facts']) {
+    package { 'mcollective-facter-facts':
+      ensure => present
+    }
   }
 
 }

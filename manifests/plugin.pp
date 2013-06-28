@@ -6,17 +6,19 @@ define mcollective::plugin($ensure = 'present', $type = undef) {
   }
 
 
-  if ! ($type in ['client', 'agent']) {
-    fail('Class[mcollective::plugin]: parameter type must be client or agent')
+  if ! ($type in ['client', 'agent', 'both']) {
+    fail('Class[mcollective::plugin]: parameter type must be client or agent or both')
   }
 
   $common_package = "mcollective-${title}-common"
   $client_package = "mcollective-${title}-client"
   $agent_package = "mcollective-${title}-agent"
 
-  package { $common_package :
-    ensure  => $ensure,
-    require => Class["mcollective::${type}::package"]
+  if ($type in ['client', 'agent']) {
+    package { $common_package :
+      ensure  => $ensure,
+      require => Class["mcollective::${type}::package"]
+    }
   }
 
   case $type {
@@ -31,6 +33,23 @@ define mcollective::plugin($ensure = 'present', $type = undef) {
         ensure  => $ensure,
         require => Class["mcollective::${type}::package"],
         notify  => Class["mcollective::${type}::service"]
+      }
+    }
+    'both': {
+      package { $common_package :
+        ensure  => $ensure,
+        require => Class["mcollective::client::package"]
+      }
+
+      package { $client_package :
+        ensure  => $ensure,
+        require => Class["mcollective::client::package"]
+      }
+
+      package { $agent_package :
+        ensure  => $ensure,
+        require => Class["mcollective::agent::package"],
+        notify  => Class["mcollective::agent::service"]
       }
     }
     default: { notice("Plugin type ${type} is not supported") }
