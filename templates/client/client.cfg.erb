@@ -6,8 +6,15 @@ logger_type = console
 loglevel = warn
 
 # Plugins
+<% if @message_ssl == true -%>
+securityprovider = ssl
+plugin.ssl_server_public = /etc/mcollective/ssl/public_keys/mcoserver-pub.pem
+plugin.ssl_client_private = /etc/mcollective/ssl/private_keys/mcoclient-priv.pem
+plugin.ssl_client_public = /etc/mcollective/ssl/public_keys/mcoclient-pub.pem
+<% else -%>
 securityprovider = psk
 plugin.psk = unset
+<% end -%>
 
 # Connecting to 1..n hosts
 connector = stomp

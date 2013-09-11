@@ -7,8 +7,15 @@ loglevel = info
 daemonize = 1
 
 # Plugins
+<% if @message_ssl == true -%>
+securityprovider = ssl
+plugin.ssl_server_private = /etc/mcollective/ssl/private_keys/mcoserver-priv.pem
+plugin.ssl_server_public = /etc/mcollective/ssl/public_keys/mcoserver-pub.pem
+plugin.ssl_client_cert_dir = /etc/mcollective/ssl/clients/
+<% else -%>
 securityprovider = psk
 plugin.psk = unset
+<% end -%>
 
 connector = stomp
 plugin.stomp.host = <%= broker_host %>
