@@ -31,7 +31,7 @@ class mcollective::client::config($broker_pool_config=[], $message_ssl = false) 
       mode   => '0644',
       source => "puppet:///modules/${module_name}/ssl/mcoclient-priv.pem",
     }
-    
+
     file {'/etc/mcollective/ssl/public_keys/mcoclient-pub.pem' :
       ensure => file,
       owner  => root,
