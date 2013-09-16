@@ -1,5 +1,7 @@
 define mcollective::middleware::config::network_connector(
-  $uri=undef,
+  $destinationhost=undef,
+  $port='61616',
+  $ssl=false,
   $username=undef,
   $password=undef,
   $duplex=true,
@@ -16,6 +18,14 @@ define mcollective::middleware::config::network_connector(
     context => '/files/etc/activemq/activemq.xml/beans/broker',
   }
 
+  if ($ssl == true) {
+    $protocol="ssl"
+  } else {
+    $protocol="tcp"
+  }
+
+  $uri = "static:(${protocol}://${destinationhost}:${port})"
+
   if $ensure in [ 'present', 'absent' ] {
     $ensure_real = $ensure
   }
@@ -30,8 +40,8 @@ define mcollective::middleware::config::network_connector(
       }
     'present':
       {
-        if ($uri == undef or $username == undef or $password == undef) {
-          fail("Class[MCollective::Middleware::Config::Network_connector[${title}]: parameters uri, username and password must be defined")
+        if ($destinationhost == undef or $username == undef or $password == undef) {
+          fail("Class[MCollective::Middleware::Config::Network_connector[${title}]: parameters destinationhost, username and password must be defined")
         }
 
         Augeas <| title == "networkConnectors/networkConnector/${title}/rm" |>
@@ -47,7 +57,6 @@ define mcollective::middleware::config::network_connector(
             "set networkConnectors/networkConnector[last()]/#attribute/networkTTL ${network_ttl}",
             "set networkConnectors/networkConnector[last()]/#attribute/dynamicOnly ${dynamic_only}",
             "set networkConnectors/networkConnector[last()]/#attribute/conduitSubscriptions ${conduit_subscriptions}",
-            'set networkConnectors/networkConnector[last()]/excludedDestinations/queue/#attribute/physicalName >',
           ],
           onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\" and #attribute/conduitSubscriptions = \"${conduit_subscriptions}\"] size == 0",
           require => Augeas["networkConnectors/networkConnector/${title}/rm"],

@@ -1,4 +1,4 @@
-class mcollective::middleware::config($type=undef) {
+class mcollective::middleware::config($type=undef, $ssl=false) {
 
   file { '/etc/activemq':
     ensure => directory

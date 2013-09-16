@@ -17,15 +17,30 @@ plugin.psk = unset
 <% end -%>
 
 # Connecting to 1..n hosts
+<% if @ssl == true -%>
+connector = activemq
+plugin.activemq.base64 = yes
+plugin.activemq.pool.size = <%= broker_pool_config.count %>
+<% scope.lookupvar('broker_pool_config').each do |broker_config| -%>
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.host = <%= broker_config['host'] %>
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.port = <%= broker_config['port'] %>
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.user = <%= broker_config['user'] %>
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.password = <%= broker_config['password'] %>
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.ssl = 1
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.ssl.ca = /etc/cegeka/ssl/certs/ca.pem
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.ssl.key = /etc/cegeka/ssl/private_keys/<%= @fqdn %>.pem
+plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.ssl.cert = /etc/cegeka/ssl/certs/<%= @fqdn %>.pem
+<% end -%>
+<% else -%>
 connector = stomp
 plugin.stomp.pool.size = <%= broker_pool_config.count %>
-<%- scope.lookupvar('broker_pool_config').each do |broker_config| -%>
+<% scope.lookupvar('broker_pool_config').each do |broker_config| -%>
 plugin.stomp.pool.host<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['host'] %>
 plugin.stomp.pool.port<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['port'] %>
 plugin.stomp.pool.user<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['user'] %>
 plugin.stomp.pool.password<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['password'] %>
-<%- end -%>
-
+<% end -%>
+<% end -%>
 # Facts
 factsource = yaml
 plugin.yaml = /etc/mcollective/facts.yaml

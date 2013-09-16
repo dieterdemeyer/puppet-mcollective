@@ -55,6 +55,15 @@
       </authorizationPlugin>
     </plugins>
 
+    <% if @ssl == true -%>
+    <sslContext>
+      <sslContext keyStore="file:/etc/cegeka/ssl/keystores/keystore.jks"
+        keyStorePassword="secret"
+        trustStore="file:/etc/cegeka/ssl/keystores/truststore.jks"
+        trustStorePassword="secret"/>
+    </sslContext>
+    <% end -%>
+
     <systemUsage>
       <systemUsage>
         <memoryUsage>
