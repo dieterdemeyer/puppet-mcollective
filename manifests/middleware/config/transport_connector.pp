@@ -16,7 +16,7 @@ define mcollective::middleware::config::transport_connector($type=undef, $listen
 
   if (! ($type in ['openwire', 'stomp'])) {
     fail("Class[Mcollective::Middleware::Config::Transport_connector]: parameter 'type' has to be 'openwire' or 'stomp'")
-  } 
+  }
 
   if ($type == 'openwire') {
     if ($ssl == true) {
