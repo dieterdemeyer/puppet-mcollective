@@ -1,4 +1,4 @@
-class mcollective::middleware($type=undef) {
+class mcollective::middleware($type=undef, $ssl=false) {
 
   if $type in ['noc', 'customer'] {
     $type_real = $type
@@ -10,7 +10,8 @@ class mcollective::middleware($type=undef) {
   include mcollective::middleware::service
 
   class { 'mcollective::middleware::config':
-    type => $type_real
+    type => $type_real,
+    ssl  => $ssl,
   }
 
   Class['mcollective::middleware::config'] -> Class['mcollective::middleware::package'] ~> Class['mcollective::middleware::service']

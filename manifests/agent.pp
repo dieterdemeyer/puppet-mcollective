@@ -1,4 +1,4 @@
-class mcollective::agent($mcollective_version=undef, $broker_host=undef, $broker_port=undef, $broker_user=undef, $broker_password=undef, $message_ssl=false) {
+class mcollective::agent($mcollective_version=undef, $broker_host=undef, $broker_port=undef, $broker_user=undef, $broker_password=undef, $message_ssl=false, $ssl=false) {
 
   if ! $broker_host {
     fail('Class[Mcollective::Agent]: parameter broker_host must be provided')
@@ -28,8 +28,9 @@ class mcollective::agent($mcollective_version=undef, $broker_host=undef, $broker
     broker_user     => $broker_user,
     broker_password => $broker_password,
     message_ssl     => $message_ssl,
+    ssl             => $ssl,
   }
 
-  Class['mcollective::agent::package'] -> Class['mcollective::agent::config'] ~> Class['mcollective::agent::service']
+  Class['mcollective::common::package'] -> Class['mcollective::agent::package'] -> Class['mcollective::agent::config'] ~> Class['mcollective::agent::service']
 
 }

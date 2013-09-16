@@ -1,4 +1,4 @@
-class mcollective::client::config($broker_pool_config=[], $message_ssl = false) {
+class mcollective::client::config($broker_pool_config=[], $message_ssl=false, $ssl=false) {
 
   file { '/etc/mcollective/client.cfg' :
     ensure  => file,
