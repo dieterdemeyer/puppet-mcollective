@@ -13,7 +13,7 @@
     </property>
   </bean>
 
-  <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" useJmx="true" schedulePeriodForDestinationPurge="60000">
+  <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" useJmx="true" schedulePeriodForDestinationPurge="60000" networkConnectorStartAsync="true">
     <destinationPolicy>
       <policyMap>
         <policyEntries>
@@ -54,6 +54,15 @@
         </map>
       </authorizationPlugin>
     </plugins>
+
+    <% if @ssl == true -%>
+    <sslContext>
+      <sslContext keyStore="file:/etc/cegeka/ssl/keystores/keystore.jks"
+        keyStorePassword="secret"
+        trustStore="file:/etc/cegeka/ssl/keystores/truststore.jks"
+        trustStorePassword="secret"/>
+    </sslContext>
+    <% end -%>
 
     <systemUsage>
       <systemUsage>

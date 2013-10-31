@@ -7,14 +7,35 @@ loglevel = info
 daemonize = 1
 
 # Plugins
+<% if @message_ssl == true -%>
+securityprovider = ssl
+plugin.ssl_server_private = /etc/mcollective/ssl/private_keys/mcoserver-priv.pem
+plugin.ssl_server_public = /etc/mcollective/ssl/public_keys/mcoserver-pub.pem
+plugin.ssl_client_cert_dir = /etc/mcollective/ssl/clients/
+<% else -%>
 securityprovider = psk
 plugin.psk = unset
+<% end -%>
 
+<% if @ssl == true -%>
+connector = activemq
+plugin.activemq.base64 = yes
+plugin.activemq.pool.size = 1
+plugin.activemq.pool.1.host = <%= broker_host %>
+plugin.activemq.pool.1.port = <%= broker_port %>
+plugin.activemq.pool.1.user = <%= broker_user %>
+plugin.activemq.pool.1.password = <%= broker_password %>
+plugin.activemq.pool.1.ssl = 1
+plugin.activemq.pool.1.ssl.ca = /etc/cegeka/ssl/certs/ca.pem
+plugin.activemq.pool.1.ssl.key = /etc/cegeka/ssl/private_keys/<%= @fqdn %>.pem
+plugin.activemq.pool.1.ssl.cert = /etc/cegeka/ssl/certs/<%= @fqdn %>.pem
+<%else -%>
 connector = stomp
 plugin.stomp.host = <%= broker_host %>
 plugin.stomp.port = <%= broker_port %>
 plugin.stomp.user = <%= broker_user %>
 plugin.stomp.password = <%= broker_password %>
+<% end -%>
 
 # Facts
 #factsource = yaml
