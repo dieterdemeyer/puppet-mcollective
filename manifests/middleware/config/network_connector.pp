@@ -24,7 +24,7 @@ define mcollective::middleware::config::network_connector(
     $protocol="tcp"
   }
 
-  $uri = "static:(${protocol}://${destinationhost}:${port})"
+  $uri = "static:(${protocol}://${destinationhost}:${port}?wireFormat.maxInactivityDuration=0)"
 
   if $ensure in [ 'present', 'absent' ] {
     $ensure_real = $ensure

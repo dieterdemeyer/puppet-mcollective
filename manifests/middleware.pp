@@ -1,4 +1,4 @@
-class mcollective::middleware($type=undef, $ssl=false, $activemq_version='5.5.0-1') {
+class mcollective::middleware($type=undef, $ssl=false, $activemq_version='5.8.0-3') {
 
   if $type in ['noc', 'customer'] {
     $type_real = $type

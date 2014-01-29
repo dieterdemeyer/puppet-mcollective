@@ -1,7 +1,8 @@
 class mcollective::common::package {
 
-  package { 'rubygem-stomp':
-    ensure => latest
+  package { 'stomp':
+    ensure   => '1.3.2',
+    provider => gem
   }
 
 }

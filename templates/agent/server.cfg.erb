@@ -1,4 +1,3 @@
-topicprefix = /topic/
 main_collective = mcollective
 collectives = mcollective
 libdir = /usr/libexec/mcollective
@@ -29,7 +28,8 @@ plugin.activemq.pool.1.ssl = 1
 plugin.activemq.pool.1.ssl.ca = /etc/cegeka/ssl/certs/ca.pem
 plugin.activemq.pool.1.ssl.key = /etc/cegeka/ssl/private_keys/<%= @fqdn %>.pem
 plugin.activemq.pool.1.ssl.cert = /etc/cegeka/ssl/certs/<%= @fqdn %>.pem
-<%else -%>
+plugin.activemq.heartbeat_interval = 30
+<% else -%>
 connector = stomp
 plugin.stomp.host = <%= broker_host %>
 plugin.stomp.port = <%= broker_port %>
