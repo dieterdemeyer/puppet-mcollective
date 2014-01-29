@@ -1,4 +1,3 @@
-topicprefix = /topic/
 main_collective = mcollective
 collectives = mcollective
 libdir = /usr/libexec/mcollective
@@ -31,6 +30,7 @@ plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_conf
 plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.ssl.key = /etc/cegeka/ssl/private_keys/<%= @fqdn %>.pem
 plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.ssl.cert = /etc/cegeka/ssl/certs/<%= @fqdn %>.pem
 <% end -%>
+plugin.activemq.heartbeat_interval = 30
 <% else -%>
 connector = stomp
 plugin.stomp.pool.size = <%= broker_pool_config.count %>
