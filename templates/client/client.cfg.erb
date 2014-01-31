@@ -1,23 +1,8 @@
-main_collective = mcollective
-collectives = mcollective
-libdir = /usr/libexec/mcollective
-logger_type = console
-loglevel = warn
-
-# Plugins
-<% if @message_ssl == true -%>
-securityprovider = ssl
-plugin.ssl_server_public = /etc/mcollective/ssl/public_keys/mcoserver-pub.pem
-plugin.ssl_client_private = /etc/mcollective/ssl/private_keys/mcoclient-priv.pem
-plugin.ssl_client_public = /etc/mcollective/ssl/public_keys/mcoclient-pub.pem
-<% else -%>
-securityprovider = psk
-plugin.psk = unset
-<% end -%>
-
-# Connecting to 1..n hosts
+# Connector settings (required):
+# -----------------------------
 <% if @ssl == true -%>
 connector = activemq
+direct_addressing = 1
 plugin.activemq.base64 = yes
 plugin.activemq.pool.size = <%= broker_pool_config.count %>
 <% scope.lookupvar('broker_pool_config').each do |broker_config| -%>
@@ -33,6 +18,7 @@ plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_conf
 plugin.activemq.heartbeat_interval = 30
 <% else -%>
 connector = stomp
+direct_addressing = 1
 plugin.stomp.pool.size = <%= broker_pool_config.count %>
 <% scope.lookupvar('broker_pool_config').each do |broker_config| -%>
 plugin.stomp.pool.host<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['host'] %>
@@ -41,6 +27,45 @@ plugin.stomp.pool.user<%= scope.lookupvar('broker_pool_config').index(broker_con
 plugin.stomp.pool.password<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['password'] %>
 <% end -%>
 <% end -%>
-# Facts
-factsource = yaml
-plugin.yaml = /etc/mcollective/facts.yaml
+
+# Security plugin settings (required):
+# -----------------------------------
+<% if @message_ssl == true -%>
+securityprovider = ssl
+plugin.ssl_server_public = /etc/mcollective/ssl/public_keys/mcoserver-pub.pem
+plugin.ssl_client_private = /etc/mcollective/ssl/private_keys/mcoclient-priv.pem
+plugin.ssl_client_public = /etc/mcollective/ssl/public_keys/mcoclient-pub.pem
+<% else -%>
+securityprovider = psk
+plugin.psk = unset
+<% end -%>
+
+# Interface settings (optional):
+# ------------------------------
+# Discovery settings:
+default_discovery_method = mc
+# default_discovery_options = /etc/mcollective/nodes.txt
+
+# Performance settings:
+direct_addressing_threshold = 10
+ttl = 60
+
+# Miscellaneous settings:
+color = 1
+rpclimitmethod = first
+
+# Subcollectives (optional):
+# -----------------------------------
+collectives = mcollective
+main_collective = mcollective
+
+# Advanced settings and platform defaults:
+# -----------------------------------
+logger_type = console
+loglevel = warn
+logfile = /var/log/mcollective.log
+keeplogs = 5
+max_log_size = 2097152
+logfacility = user
+libdir = /usr/libexec/mcollective
+
