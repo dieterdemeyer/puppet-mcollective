@@ -4,7 +4,7 @@
 connector = activemq
 direct_addressing = 1
 plugin.activemq.base64 = yes
-plugin.activemq.pool.size = <%= broker_pool_config.count %>
+plugin.activemq.pool.size = <%= @broker_pool_config.count %>
 <% scope.lookupvar('broker_pool_config').each do |broker_config| -%>
 plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.host = <%= broker_config['host'] %>
 plugin.activemq.pool.<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %>.port = <%= broker_config['port'] %>
@@ -19,7 +19,7 @@ plugin.activemq.heartbeat_interval = 30
 <% else -%>
 connector = stomp
 direct_addressing = 1
-plugin.stomp.pool.size = <%= broker_pool_config.count %>
+plugin.stomp.pool.size = <%= @broker_pool_config.count %>
 <% scope.lookupvar('broker_pool_config').each do |broker_config| -%>
 plugin.stomp.pool.host<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['host'] %>
 plugin.stomp.pool.port<%= scope.lookupvar('broker_pool_config').index(broker_config) + 1 %> = <%= broker_config['port'] %>
