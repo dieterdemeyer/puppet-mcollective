@@ -5,10 +5,10 @@ connector = activemq
 direct_addressing = 1
 plugin.activemq.base64 = yes
 plugin.activemq.pool.size = 1
-plugin.activemq.pool.1.host = <%= broker_host %>
-plugin.activemq.pool.1.port = <%= broker_port %>
-plugin.activemq.pool.1.user = <%= broker_user %>
-plugin.activemq.pool.1.password = <%= broker_password %>
+plugin.activemq.pool.1.host = <%= @broker_host %>
+plugin.activemq.pool.1.port = <%= @broker_port %>
+plugin.activemq.pool.1.user = <%= @broker_user %>
+plugin.activemq.pool.1.password = <%= @broker_password %>
 plugin.activemq.pool.1.ssl = 1
 plugin.activemq.pool.1.ssl.ca = /etc/cegeka/ssl/certs/ca.pem
 plugin.activemq.pool.1.ssl.key = /etc/cegeka/ssl/private_keys/<%= @fqdn %>.pem
@@ -17,10 +17,10 @@ plugin.activemq.heartbeat_interval = 30
 <% else -%>
 connector = stomp
 direct_addressing = 1
-plugin.stomp.host = <%= broker_host %>
-plugin.stomp.port = <%= broker_port %>
-plugin.stomp.user = <%= broker_user %>
-plugin.stomp.password = <%= broker_password %>
+plugin.stomp.host = <%= @broker_host %>
+plugin.stomp.port = <%= @broker_port %>
+plugin.stomp.user = <%= @broker_user %>
+plugin.stomp.password = <%= @broker_password %>
 <% end -%>
 
 # Security plugin settings (required):
