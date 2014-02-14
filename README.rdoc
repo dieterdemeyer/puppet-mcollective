@@ -1,5 +1,5 @@
 = puppet-mcollective module
 
-{<img src='https://codex.cegeka.be/jenkins/buildStatus/icon?job=puppet-alternatives' />}[https://codex.cegeka.be/jenkins/job/puppet-mcollective/]
+{<img src='https://codex.cegeka.be/jenkins/job/puppet-mcollective/badge/icon' />}[https://codex.cegeka.be/jenkins/job/puppet-mcollective/]
 
 This is the mcollective module.
