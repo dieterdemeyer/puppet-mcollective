@@ -8,7 +8,6 @@ define mcollective::middleware::config::network_connector(
   $decrease_network_consumer_priority=true,
   $network_ttl='2',
   $dynamic_only=true,
-  $conduit_subscriptions=true,
   $ensure='present'
 ) {
 
@@ -24,7 +23,7 @@ define mcollective::middleware::config::network_connector(
     $protocol="tcp"
   }
 
-  $uri = "static:(${protocol}://${destinationhost}:${port}?wireFormat.maxInactivityDuration=0)"
+  $uri = "static:(${protocol}://${destinationhost}:${port})"
 
   if $ensure in [ 'present', 'absent' ] {
     $ensure_real = $ensure
@@ -56,9 +55,8 @@ define mcollective::middleware::config::network_connector(
             "set networkConnectors/networkConnector[last()]/#attribute/decreaseNetworkConsumerPriority ${decrease_network_consumer_priority}",
             "set networkConnectors/networkConnector[last()]/#attribute/networkTTL ${network_ttl}",
             "set networkConnectors/networkConnector[last()]/#attribute/dynamicOnly ${dynamic_only}",
-            "set networkConnectors/networkConnector[last()]/#attribute/conduitSubscriptions ${conduit_subscriptions}",
           ],
-          onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\" and #attribute/conduitSubscriptions = \"${conduit_subscriptions}\"] size == 0",
+          onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\"] size == 0",
           require => Augeas["networkConnectors/networkConnector/${title}/rm"],
           notify  => Class['mcollective::middleware::service']
         }
@@ -70,7 +68,7 @@ define mcollective::middleware::config::network_connector(
     changes => [
       "rm networkConnectors/networkConnector[.][#attribute/name = \"${title}\"]",
     ],
-    onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\" and #attribute/conduitSubscriptions = \"${conduit_subscriptions}\"] size == 0",
+    onlyif  => "match networkConnectors/networkConnector[.][#attribute/name = \"${title}\" and #attribute/uri = \"${uri}\" and #attribute/userName = \"${username}\" and #attribute/password = \"${password}\"] size == 0",
     require => Class['mcollective::middleware::config'],
     notify  => Class['mcollective::middleware::service']
   }
