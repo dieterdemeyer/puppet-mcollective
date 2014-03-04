@@ -18,8 +18,8 @@ describe 'mcollective::middleware' do
     context 'with type => noc' do
       let (:params) { { :type => 'noc'} }
 
-      it { should include_class 'mcollective::middleware::package' }
-      it { should include_class 'mcollective::middleware::service' }
+      it { should contain_class 'mcollective::middleware::package' }
+      it { should contain_class 'mcollective::middleware::service' }
 
       it { should contain_class('mcollective::middleware::config').with_type('noc')}
 
