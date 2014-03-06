@@ -35,7 +35,6 @@ describe 'mcollective::middleware::config::network_connector::excluded_destinati
         :incl    => '/etc/activemq/activemq.xml',
         :context => '/files/etc/activemq/activemq.xml/beans/broker/networkConnectors/networkConnector[#attribute/name = "broker1-topics"]',
         :changes => [
-          'set excludedDestinations',
           'rm excludedDestinations/queue'
         ]
       )}
@@ -45,7 +44,6 @@ describe 'mcollective::middleware::config::network_connector::excluded_destinati
         :incl    => '/etc/activemq/activemq.xml',
         :context => '/files/etc/activemq/activemq.xml/beans/broker/networkConnectors/networkConnector[#attribute/name = "broker1-topics"]',
         :changes => [
-          'set excludedDestinations',
           'rm excludedDestinations/topic'
         ]
       )}
@@ -63,7 +61,6 @@ describe 'mcollective::middleware::config::network_connector::excluded_destinati
         :context => '/files/etc/activemq/activemq.xml/beans/broker/networkConnectors/networkConnector[#attribute/name = "broker1-topics"]',
         :onlyif  => 'match excludedDestinations/queue/#attribute/physicalName[. = ">"] size == 0',
         :changes => [
-          'set excludedDestinations',
           'set excludedDestinations/queue[last()+1]/#attribute/physicalName ">"'
         ]
       )}
@@ -74,7 +71,6 @@ describe 'mcollective::middleware::config::network_connector::excluded_destinati
         :context => '/files/etc/activemq/activemq.xml/beans/broker/networkConnectors/networkConnector[#attribute/name = "broker1-topics"]',
         :onlyif  => 'match excludedDestinations/topic/#attribute/physicalName[. = "test.foo"] size == 0',
         :changes => [
-          'set excludedDestinations',
           'set excludedDestinations/topic[last()+1]/#attribute/physicalName "test.foo"'
         ]
       )}
