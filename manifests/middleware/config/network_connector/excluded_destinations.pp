@@ -20,7 +20,6 @@ define mcollective::middleware::config::network_connector::excluded_destinations
       if empty($queue) {
         augeas { "networkConnector/${title}/excludedDestinations/queue":
           changes => [
-            'set excludedDestinations',
             'rm excludedDestinations/queue'
           ]
         }
@@ -28,7 +27,6 @@ define mcollective::middleware::config::network_connector::excluded_destinations
         augeas { "networkConnector/${title}/excludedDestinations/queue/${queue}":
           onlyif  => "match excludedDestinations/queue/#attribute/physicalName[. = \"${queue}\"] size == 0",
           changes => [
-            'set excludedDestinations',
             "set excludedDestinations/queue[last()+1]/#attribute/physicalName \"${queue}\""
           ]
         }
@@ -37,7 +35,6 @@ define mcollective::middleware::config::network_connector::excluded_destinations
       if empty($topic) {
         augeas { "networkConnector/${title}/excludedDestinations/topic":
           changes => [
-            'set excludedDestinations',
             'rm excludedDestinations/topic'
           ]
         }
@@ -45,7 +42,6 @@ define mcollective::middleware::config::network_connector::excluded_destinations
         augeas { "networkConnector/${title}/excludedDestinations/topic/${topic}":
           onlyif  => "match excludedDestinations/topic/#attribute/physicalName[. = \"${topic}\"] size == 0",
           changes => [
-            'set excludedDestinations',
             "set excludedDestinations/topic[last()+1]/#attribute/physicalName \"${topic}\""
           ]
         }
